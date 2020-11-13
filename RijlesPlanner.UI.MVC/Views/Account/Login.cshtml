@@ -1,0 +1,43 @@
+﻿@model RijlesPlanner.UI.MVC.ViewModels.AccountViewModels.LoginViewModel
+
+<div class="container">
+    <h2>User login</h2>
+    <hr />
+    <form asp-action="Login" asp-controller="Account" method="post">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="EmailAddress"></label>
+                    <input asp-for="EmailAddress" class="form-control" />
+                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input">
+                    <label class="form-check-label" asp-for="RememberMe"></label>
+                </div>
+            </div>
+            <div class="col">
+                <a asp-action="Register">Create an account.</a>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col">
+                <input class="btn btn-primary" value="Login" type="submit"/>
+            </div>
+        </div>
+    </form>
+</div>

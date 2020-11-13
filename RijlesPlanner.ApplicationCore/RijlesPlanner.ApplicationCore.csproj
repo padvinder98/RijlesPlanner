@@ -8,8 +8,4 @@
     <ProjectReference Include="..\RijlesPlanner.FactoryLayer\RijlesPlanner.FactoryLayer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

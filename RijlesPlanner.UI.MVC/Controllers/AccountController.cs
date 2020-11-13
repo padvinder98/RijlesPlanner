@@ -27,5 +27,24 @@ namespace RijlesPlanner.UI.MVC.Controllers
 
             return View();
         }
+
+        // GET: Account/Login
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Account/Login
+        [HttpPost]
+        public IActionResult Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return View();
+            }
+
+            return View();
+        }
     }
 }
