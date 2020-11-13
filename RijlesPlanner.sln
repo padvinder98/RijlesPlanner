@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RijlesPlanner.IDataAccessLa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RijlesPlanner.FactoryLayer", "RijlesPlanner.FactoryLayer\RijlesPlanner.FactoryLayer.csproj", "{396996C3-5DF3-432D-8AD0-FA149FB63DCE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RijlesPlanner.Test", "RijlesPlanner.Test\RijlesPlanner.Test.csproj", "{FD159E8B-2904-4249-80D8-91F72878DC59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{396996C3-5DF3-432D-8AD0-FA149FB63DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{396996C3-5DF3-432D-8AD0-FA149FB63DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{396996C3-5DF3-432D-8AD0-FA149FB63DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD159E8B-2904-4249-80D8-91F72878DC59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD159E8B-2904-4249-80D8-91F72878DC59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD159E8B-2904-4249-80D8-91F72878DC59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD159E8B-2904-4249-80D8-91F72878DC59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
