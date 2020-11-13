@@ -1,6 +1,6 @@
 using System;
 
-namespace RijlesPlanner.UI.MVC.Models
+namespace RijlesPlanner.UI.MVC.ViewModels
 {
     public class ErrorViewModel
     {
