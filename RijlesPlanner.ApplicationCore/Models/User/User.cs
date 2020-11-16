@@ -12,5 +12,13 @@ namespace RijlesPlanner.ApplicationCore.Models.User
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public string EmailAddress { get; set; }
+
+        public User(string firstName, string lastName, DateTime birthDate, string emailAddress)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            BirthDate = birthDate;
+            EmailAddress = emailAddress;
+        }
     }
 }

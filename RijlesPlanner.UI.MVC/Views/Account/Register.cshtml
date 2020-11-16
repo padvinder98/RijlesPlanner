@@ -3,6 +3,7 @@
 <div class="container">
     <h2>User registration</h2>
     <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <form asp-action="Register" asp-controller="Account" method="post">
         <div class="row">
             <div class="col">
@@ -14,9 +15,9 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="FirtName"></label>
-                    <input asp-for="FirtName" class="form-control" />
-                    <span asp-validation-for="FirtName" class="text-danger"></span>
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -56,7 +57,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <input class="btn btn-primary" value="Register" type="submit"/>
+                <input class="btn btn-primary" value="Register" type="submit" />
             </div>
         </div>
     </form>

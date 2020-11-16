@@ -7,5 +7,7 @@ namespace RijlesPlanner.IDataAccessLayer
         public int CreateUser(UserDto userDto, string salt, string password);
         public UserDto GetUserById(int id);
         public UserDto GetUserByEmailAddress(string emailAddress);
+        public string GetSaltByEamilAddress(string emailAddress);
+        public bool DoPasswordsMatch(string emailAddress, string password);
     }
 }
