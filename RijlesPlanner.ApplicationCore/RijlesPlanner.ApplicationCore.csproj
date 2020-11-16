@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RijlesPlanner.FactoryLayer\RijlesPlanner.FactoryLayer.csproj" />
+    <ProjectReference Include="..\RijlesPlanner.IDataAccessLayer\RijlesPlanner.IDataAccessLayer.csproj" />
   </ItemGroup>
 
 </Project>

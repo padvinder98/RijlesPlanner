@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace RijlesPlanner.DataAccessLayer
 {
-    public class UserDal : IUserContainer
+    public class UserDal : IUserContainerDal
     {
         public int CreateUser(UserDto userDto, string salt, string password)
         {

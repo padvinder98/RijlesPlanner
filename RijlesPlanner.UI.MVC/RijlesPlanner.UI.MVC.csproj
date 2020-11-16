@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RijlesPlanner.ApplicationCore\RijlesPlanner.ApplicationCore.csproj" />
+    <ProjectReference Include="..\RijlesPlanner.DataAccessLayer\RijlesPlanner.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\RijlesPlanner.IDataAccessLayer\RijlesPlanner.IDataAccessLayer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 
 namespace RijlesPlanner.IDataAccessLayer
 {
-    public interface IUserContainer
+    public interface IUserContainerDal
     {
         public int CreateUser(UserDto userDto, string salt, string password);
         public UserDto GetUserById(int id);

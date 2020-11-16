@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RijlesPlanner.ApplicationCore.Models.User;
 using RijlesPlanner.UI.MVC.ViewModels.AccountViewModels;
 using System;
 using System.Collections.Generic;
