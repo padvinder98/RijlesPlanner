@@ -1,18 +1,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RijlesPlanner.ApplicationCore.Containers;
 using RijlesPlanner.ApplicationCore.Interfaces;
-using RijlesPlanner.ApplicationCore.Models.User;
 using RijlesPlanner.DataAccessLayer;
 using RijlesPlanner.IDataAccessLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RijlesPlanner.UI.MVC
 {
@@ -35,8 +30,14 @@ namespace RijlesPlanner.UI.MVC
             services.AddControllersWithViews();
 
             // Register dependencies.
+            services.AddScoped<IRoleContainerDal, RoleDal>();
+            services.AddScoped<IRoleContainer, RoleContainer>();
+
             services.AddScoped<IUserContainerDal, UserDal>();
             services.AddScoped<IUserContainer, UserContainer>();
+
+            services.AddScoped<ILessonContainerDal, LessonDal>();
+            services.AddScoped<ILessonContainer, LessonContainer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,7 +67,7 @@ namespace RijlesPlanner.UI.MVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

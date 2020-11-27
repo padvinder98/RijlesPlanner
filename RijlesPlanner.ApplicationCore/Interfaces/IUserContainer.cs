@@ -1,20 +1,21 @@
-﻿using RijlesPlanner.ApplicationCore.Models.User;
-using RijlesPlanner.ApplicationCore.Results;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
+using RijlesPlanner.ApplicationCore.Models;
+using RijlesPlanner.ApplicationCore.Results;
+using RijlesPlanner.ApplicationCore.ViewModels.AccountViewModels;
 
 namespace RijlesPlanner.ApplicationCore.Interfaces
 {
     public interface IUserContainer
     {
-        public UserResult CreateUser(User user, string password);
-        public User FindUserById(int Id);
-        public User FindUserByEmail(string emailAddress);
-        public ClaimsPrincipal LoginUser(User user);
-        public UserResult LoginUserWithPassword(User user, string password);
+        public Task<User> GetUserByEmailAddressAsync(string emailAddress);
+        public Task<User> GetUserByIdAsync(Guid id);
+        public Task<bool> DoesEmailAddressExistsAsync(string emailAddress);
+        public Task<UserResult> CreateNewUserAsync(User user, string password);
+        public Task<bool> DoesPasswordsMatchAsync(string emailAddress, string password);
+        public Task<ProfileViewModel> GetProfileByEmailAddressAsync(string emailAddress);
+        public Task UpdateUserAsync(User user);
+        public Task<List<User>> GetAllStudents(Guid roleId);
     }
 }

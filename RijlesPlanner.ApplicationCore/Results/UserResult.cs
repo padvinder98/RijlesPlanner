@@ -1,25 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RijlesPlanner.ApplicationCore.Results
 {
     public class UserResult
     {
-        public bool IsSucceed { get; }
-        public string Error { get; }
+        public bool IsSucceedded { get; private set; } = true;
+        public List<Error> Errors { get; }
 
-        public UserResult(bool isSucceed)
+        public UserResult()
         {
-            IsSucceed = isSucceed;
+            Errors = new List<Error>();
         }
 
-        public UserResult(bool isSucceed, string error)
+        public void AddUserResultError(Error error)
         {
-            IsSucceed = isSucceed;
-            Error = error;
+            Errors.Add(error);
+        }
+
+        public void SetFailed()
+        {
+            IsSucceedded = false;
+        }
+    }
+
+    public class Error
+    {
+        public string Description { get; }
+
+        public Error(string description)
+        {
+            Description = description;
         }
     }
 }

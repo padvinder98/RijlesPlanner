@@ -1,4 +1,8 @@
-﻿@model RijlesPlanner.UI.MVC.ViewModels.AccountViewModels.LoginViewModel
+﻿@model RijlesPlanner.ApplicationCore.ViewModels.AccountViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
 
 <div class="container">
     <h2>User login</h2>
@@ -25,19 +29,15 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="form-check">
-                    <input asp-for="RememberMe" class="form-check-input">
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" asp-for="RememberMe">
                     <label class="form-check-label" asp-for="RememberMe"></label>
                 </div>
             </div>
-            <div class="col">
-                <a asp-action="Register">Create an account.</a>
-            </div>
         </div>
-        <br />
         <div class="row">
             <div class="col">
-                <input class="btn btn-primary" value="Login" type="submit" />
+                <input class="btn btn-primary btn-lg" value="Login" type="submit" />
             </div>
         </div>
     </form>

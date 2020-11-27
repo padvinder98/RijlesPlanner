@@ -1,14 +1,15 @@
-﻿@model RijlesPlanner.ApplicationCore.ViewModels.AccountViewModels.RegisterViewModel
+﻿@model RijlesPlanner.ApplicationCore.ViewModels.AccountViewModels.ProfileViewModel
 
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Profile";
 }
 
+
 <div class="container">
-    <h2>User registration</h2>
+    <h2>User Profile</h2>
     <hr />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <form asp-action="Register" asp-controller="Account" method="post">
+    <form asp-action="Profile" asp-controller="Account" method="post">
         <div class="row">
             <div class="col">
                 <div class="form-group">
@@ -38,7 +39,7 @@
             <div class="col">
                 <div class="form-group">
                     <label asp-for="EmailAddress"></label>
-                    <input asp-for="EmailAddress" class="form-control" />
+                    <input asp-for="EmailAddress" class="form-control" disabled />
                     <span asp-validation-for="EmailAddress" class="text-danger"></span>
                 </div>
             </div>
@@ -46,22 +47,31 @@
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="ConfirmPassword"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    <label asp-for="City"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <input class="btn btn-primary btn-lg" value="Register" type="submit" />
+                <div class="form-group">
+                    <label asp-for="StreetName"></label>
+                    <input asp-for="StreetName" class="form-control" />
+                    <span asp-validation-for="StreetName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="HouseNumber"></label>
+                    <input asp-for="HouseNumber" class="form-control" />
+                    <span asp-validation-for="HouseNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <input class="btn btn-primary btn-lg" type="submit" value="Update" />
             </div>
         </div>
     </form>

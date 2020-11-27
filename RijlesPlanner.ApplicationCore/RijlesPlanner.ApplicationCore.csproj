@@ -14,4 +14,13 @@
     <ProjectReference Include="..\RijlesPlanner.IDataAccessLayer\RijlesPlanner.IDataAccessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Results\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Containers\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Models\" />
+    <Folder Include="ViewModels\AccountViewModels\" />
+    <Folder Include="ViewModels\DashboardViewModels\" />
+  </ItemGroup>
 </Project>

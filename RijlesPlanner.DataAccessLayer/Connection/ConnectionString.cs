@@ -8,7 +8,7 @@ namespace RijlesPlanner.DataAccessLayer.Connection
 {
     public static class ConnectionString
     {
-        private static readonly string connectionString = "Server=(localdb)\\mssqllocaldb;Database=RijlesPlanner;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private static readonly string connectionString = "Server=127.0.0.1;Database=RijlesPlanner;User Id=SA;Password=H3ll0-ry4n";
 
         public static string GetConnectionString()
         {

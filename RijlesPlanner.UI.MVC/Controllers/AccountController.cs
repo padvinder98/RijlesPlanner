@@ -1,26 +1,34 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using RijlesPlanner.ApplicationCore.Interfaces;
-using RijlesPlanner.ApplicationCore.Models.User;
-using RijlesPlanner.UI.MVC.ViewModels.AccountViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using RijlesPlanner.ApplicationCore.Interfaces;
+using RijlesPlanner.ApplicationCore.Models;
+using RijlesPlanner.ApplicationCore.ViewModels.AccountViewModels;
+
+// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RijlesPlanner.UI.MVC.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
+        private readonly IRoleContainer _roleContainer;
         private readonly IUserContainer _userContainer;
 
-        public AccountController(IUserContainer userContainer)
+        public AccountController(IRoleContainer roleContainer, IUserContainer userContainer)
         {
+            _roleContainer = roleContainer;
             _userContainer = userContainer;
         }
 
         // GET: Account/Register
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
@@ -28,73 +36,110 @@ namespace RijlesPlanner.UI.MVC.Controllers
         }
 
         // POST: Account/Register
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> RegisterAsync(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new User(model.FirtName, model.LastName, model.BirthDate, model.EmailAddress);
+                var role = await _roleContainer.GetRoleByName("Student");
+                var user = new User(model.FirstName, model.LastName, model.DateOfBirth, model.EmailAddress, role);
 
-                var result = _userContainer.CreateUser(user, model.Password);
+                var result = await _userContainer.CreateNewUserAsync(user, model.Password);
 
-                if (result.IsSucceed)
+                if (result.IsSucceedded)
                 {
-                    var principal = _userContainer.LoginUser(user);
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
                     return RedirectToAction("Login", "Account");
                 }
 
-                ModelState.AddModelError(string.Empty, result.Error);
-
-                return View(model);
-            }
-
-            return View();
-        }
-
-        // GET: Account/Login
-        [HttpGet]
-        public IActionResult Login()
-        {
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View();
-        }
-
-        // POST: Account/Login
-        [HttpPost]
-        public async Task<IActionResult> LoginAsync(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = _userContainer.FindUserByEmail(model.EmailAddress);
-
-                var result = _userContainer.LoginUserWithPassword(user, model.Password);
-
-                if (result.IsSucceed)
+                foreach (var error in result.Errors)
                 {
-                    var principal = _userContainer.LoginUser(user);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                    return RedirectToAction("Index", "Home");
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
-
-                ModelState.AddModelError(string.Empty, result.Error);
 
                 return View();
             }
 
             return View();
         }
+
+        // GET: Account/Login
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Login()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+
+            return View();
+        }
+
+        // POST: Account/Login
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await _userContainer.DoesEmailAddressExistsAsync(model.EmailAddress) && await _userContainer.DoesPasswordsMatchAsync(model.EmailAddress, model.Password))
+                {
+                    var user = await _userContainer.GetUserByEmailAddressAsync(model.EmailAddress);
+
+                    // Create the identity
+                    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                    identity.AddClaim(new Claim(ClaimTypes.Name, user.EmailAddress));
+                    identity.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
+                    identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
+                    identity.AddClaim(new Claim(ClaimTypes.Role, user.Role.Name));
+
+                    // Sign in
+                    var principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    return RedirectToAction("Index", "Dashboard");
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login.");
+
+                return View();
+            }
+
+            return View();
+        }
+
+        // GET: Account/LogOut
+        [AllowAnonymous]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+
+        // GET: Account/Profile
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            return View(await _userContainer.GetProfileByEmailAddressAsync(User.Identity.Name));
+        }
+
+        // POST: Account/Profile
+        [HttpPost]
+        public async Task<IActionResult> Profile(ProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userContainer.GetUserByEmailAddressAsync(User.Identity.Name);
+
+                user.Update(model.FirstName, model.LastName, model.DateOfBirth, model.City, model.StreetName, model.HouseNumber);
+
+                await _userContainer.UpdateUserAsync(user);
+                
+                return View(await _userContainer.GetProfileByEmailAddressAsync(User.Identity.Name));
+            }
+
+            return View(await _userContainer.GetProfileByEmailAddressAsync(User.Identity.Name));
         }
     }
 }

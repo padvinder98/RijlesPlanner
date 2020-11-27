@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace RijlesPlanner.IDataAccessLayer.Dtos
 {
     public class UserDto
@@ -11,25 +6,27 @@ namespace RijlesPlanner.IDataAccessLayer.Dtos
         public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string EmailAddress { get; set; }
+        public string City { get; set; }
+        public string StreetName { get; set; }
+        public string HouseNumber { get; set; }
+        public string Password { get; set; }
+        public string Salt { get; set; }
+        public RoleDto RoleDto { get; set; }
 
-        public UserDto(Guid id, string firstName, string lastName, string emailAddress, DateTime birthDate)
+        public UserDto()
         {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            BirthDate = birthDate;
-            EmailAddress = emailAddress;
+
         }
 
-        public UserDto(string firstName, string lastName, DateTime birthDate, string emailAddress)
+        public UserDto(string firstName, string lastName, DateTime dateOfBirth, string emailAddress, RoleDto roleDto)
         {
-            Id = Guid.NewGuid();
             FirstName = firstName;
             LastName = lastName;
-            BirthDate = birthDate;
+            DateOfBirth = dateOfBirth;
             EmailAddress = emailAddress;
+            RoleDto = roleDto;
         }
     }
 }

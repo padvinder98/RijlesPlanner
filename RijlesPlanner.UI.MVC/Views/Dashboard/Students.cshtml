@@ -1,0 +1,59 @@
+﻿@model RijlesPlanner.ApplicationCore.ViewModels.DashboardViewModels.StudentsViewModel
+
+<div class="container">
+    <h2>Driveschool students</h2>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <h4>All students</h4>
+            <table class="table" id="usersTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">First name</th>
+                        <th scope="col">Last name</th>
+                        <th scope="col">Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.AllStudents)
+                    {
+                        <tr>
+                            <td id="student-id">@student.Id</td>
+                            <td>@student.FirstName</td>
+                            <td>@student.LastName</td>
+                            <td><input class="btn btn-primary btn-sm" value="Info" type="button" id="target" /> <input class="btn btn-success btn-sm" value="Add" type="button" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="your-div-to-hold-partial-view">
+
+</div>
+
+@section Scripts{
+    <script>
+        $("#usersTable").on('click', '#target', function () {
+
+            var currentRow = $(this).closest("tr");
+
+            var id = currentRow.find("td:eq(0)").text();
+
+            $.ajax({
+                type: "GET",
+                url: "/Dashboard/GetStudentInfo",
+                data: { id: id },
+                datatype: "json",
+                cache: false,
+                error: function (e) { alert("nope" + e); },
+                success: function (partialViewData) {
+                    $('#your-div-to-hold-partial-view').html(partialViewData);
+                    $('#studentInfoModal').modal('show');
+                }
+            });
+        });</script>
+}
