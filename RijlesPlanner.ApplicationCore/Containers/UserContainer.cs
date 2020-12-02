@@ -8,26 +8,30 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using RijlesPlanner.ApplicationCore.Interfaces;
 using RijlesPlanner.ApplicationCore.Models;
 using RijlesPlanner.ApplicationCore.Results;
-using RijlesPlanner.ApplicationCore.ViewModels.AccountViewModels;
-using RijlesPlanner.IDataAccessLayer;
-using RijlesPlanner.IDataAccessLayer.Dtos;
+using RijlesPlanner.IData.Dtos;
+using RijlesPlanner.IData.Interfaces;
 
 namespace RijlesPlanner.ApplicationCore.Containers
 {
     public class UserContainer : IUserContainer
     {
-        private readonly IUserContainerDal _userContainerDal;
+        private readonly IUserRepository _userRepository;
 
-        public UserContainer(IUserContainerDal userContainerDal)
+        public UserContainer(IUserRepository userRepository)
         {
-            _userContainerDal = userContainerDal;
+            _userRepository = userRepository;
+        }
+
+        public async Task<int> AddStudentToInstructorAsync(Guid instructorId, Guid studentId)
+        {
+            return await _userRepository.AddStudentToInstructorAsync(instructorId, studentId);
         }
 
         public async Task<UserResult> CreateNewUserAsync(User user, string password)
         {
             UserResult userResult = new UserResult();
 
-            if (await _userContainerDal.DoesEmailAddressExistsAsync(user.EmailAddress))
+            if (await _userRepository.DoesEmailAddressExistsAsync(user.EmailAddress))
             {
                 userResult.AddUserResultError(new Error("This user already exists."));
                 userResult.SetFailed();
@@ -37,7 +41,7 @@ namespace RijlesPlanner.ApplicationCore.Containers
                 var salt = CreateSalt();
                 var hashedPassword = HashPassword(password, salt);
 
-                if (await _userContainerDal.CreateNewUserAsync(new UserDto(user.FirstName, user.LastName, user.DateOfBirth, user.EmailAddress, new RoleDto(user.Role.Id, user.Role.Name)), hashedPassword, salt) != 1)
+                if (await _userRepository.CreateNewUserAsync(new UserDto(user.FirstName, user.LastName, user.DateOfBirth, user.EmailAddress, new RoleDto(user.Role.Id, user.Role.Name)), hashedPassword, salt) != 1)
                 {
                     userResult.AddUserResultError(new Error("Something went wrong"));
                     userResult.SetFailed();
@@ -49,43 +53,48 @@ namespace RijlesPlanner.ApplicationCore.Containers
 
         public async Task<bool> DoesEmailAddressExistsAsync(string emailAddress)
         {
-            return await _userContainerDal.DoesEmailAddressExistsAsync(emailAddress);
+            return await _userRepository.DoesEmailAddressExistsAsync(emailAddress);
         }
 
         public async Task<bool> DoesPasswordsMatchAsync(string emailAddress, string password)
         {
-            var salt = await _userContainerDal.GetSaltByEmailaddressAsync(emailAddress);
+            var salt = await _userRepository.GetSaltByEmailaddressAsync(emailAddress);
 
-            return await _userContainerDal.DoesPasswordsMatchAsync(emailAddress, HashPassword(password, salt));
+            return await _userRepository.DoesPasswordsMatchAsync(emailAddress, HashPassword(password, salt));
         }
 
         public async Task<List<User>> GetAllStudents(Guid roleId)
         {
-            var result = await _userContainerDal.GetAllStudents(roleId);
+            var result = await _userRepository.GetAllStudentsAsync(roleId);
 
             return result.Select(u => new User(u)).ToList();
         }
 
-        public async Task<ProfileViewModel> GetProfileByEmailAddressAsync(string emailAddress)
+        public async Task<List<User>> GetAllStudentsByInstructorAsync(Guid instructorId)
         {
-            var user = await _userContainerDal.GetUserByEmailAddressAsync(emailAddress);
+            var result = await _userRepository.GetAllStudentsByInstructorAsync(instructorId);
 
-            return new ProfileViewModel { FirstName = user.FirstName, LastName = user.LastName, DateOfBirth = user.DateOfBirth, EmailAddress = user.EmailAddress, City = user.City, HouseNumber = user.HouseNumber, StreetName = user.StreetName};
+            return result.Select(u => new User(u)).ToList();
         }
 
         public async Task<User> GetUserByEmailAddressAsync(string emailAddress)
         {
-            return new User(await _userContainerDal.GetUserByEmailAddressAsync(emailAddress));
+            return new User(await _userRepository.GetUserByEmailAddressAsync(emailAddress));
         }
 
         public async Task<User> GetUserByIdAsync(Guid id)
         {
-            return new User(await _userContainerDal.GetUserByIdAsync(id));
+            return new User(await _userRepository.GetUserByIdAsync(id));
+        }
+
+        public async Task<int> RemoveStudentFromInstructorAsync(Guid instructorId, Guid studentId)
+        {
+            return await _userRepository.RemoveStudentFromInstructorAsync(instructorId, studentId);
         }
 
         public async Task UpdateUserAsync(User user)
         {
-            await _userContainerDal.UpdateUserAsync(new UserDto { Id= user.Id, FirstName = user.FirstName, LastName = user.LastName, DateOfBirth = user.DateOfBirth, City = user.City, StreetName = user.StreetName, HouseNumber = user.HouseNumber });
+            await _userRepository.UpdateUserAsync(new UserDto { Id= user.Id, FirstName = user.FirstName, LastName = user.LastName, DateOfBirth = user.DateOfBirth, City = user.City, StreetName = user.StreetName, HouseNumber = user.HouseNumber });
         }
 
         private string CreateSalt()

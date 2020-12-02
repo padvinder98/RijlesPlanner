@@ -10,8 +10,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RijlesPlanner.ApplicationCore\RijlesPlanner.ApplicationCore.csproj" />
-    <ProjectReference Include="..\RijlesPlanner.DataAccessLayer\RijlesPlanner.DataAccessLayer.csproj" />
-    <ProjectReference Include="..\RijlesPlanner.IDataAccessLayer\RijlesPlanner.IDataAccessLayer.csproj" />
+    <ProjectReference Include="..\RijlesPlanner.IData\RijlesPlanner.IData.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\RijlesPlanner.Data\RijlesPlanner.Data.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -20,5 +24,11 @@
     <Folder Include="Views\Shared\PartialViews\AccountPartialViews\" />
     <Folder Include="Views\Dashboard\" />
     <Folder Include="Views\Shared\PartialViews\DashboardPartialViews\" />
+    <Folder Include="Views\Shared\PartialViews\StudentPartialViews\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="ViewModels\AccountViewModels\" />
+    <Folder Include="ViewModels\DashboardViewModels\" />
+    <Folder Include="ViewModels\LessonViewModels\" />
+    <Folder Include="Views\Shared\PartialViews\LessonPartialViews\" />
   </ItemGroup>
 </Project>

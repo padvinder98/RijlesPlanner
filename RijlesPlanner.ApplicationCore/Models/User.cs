@@ -1,5 +1,5 @@
 ﻿using System;
-using RijlesPlanner.IDataAccessLayer.Dtos;
+using RijlesPlanner.IData.Dtos;
 
 namespace RijlesPlanner.ApplicationCore.Models
 {
@@ -25,7 +25,7 @@ namespace RijlesPlanner.ApplicationCore.Models
             this.City = userDto.City;
             this.StreetName = userDto.StreetName;
             this.HouseNumber = userDto.HouseNumber;
-            this.Role = new Role(userDto.RoleDto);
+            this.Role = new Role(userDto.Role);
         }
 
         public User(string firstName, string lastName, DateTime dateOfBirth, string emailAddress, Role role)

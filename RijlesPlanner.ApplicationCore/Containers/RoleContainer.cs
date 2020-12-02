@@ -2,22 +2,22 @@
 using System.Threading.Tasks;
 using RijlesPlanner.ApplicationCore.Interfaces;
 using RijlesPlanner.ApplicationCore.Models;
-using RijlesPlanner.IDataAccessLayer;
+using RijlesPlanner.IData.Interfaces;
 
 namespace RijlesPlanner.ApplicationCore.Containers
 {
     public class RoleContainer : IRoleContainer
     {
-        private readonly IRoleContainerDal _roleContainerDal;
+        private readonly IRoleRepository _roleRepository;
 
-        public RoleContainer(IRoleContainerDal roleContainerDal)
+        public RoleContainer(IRoleRepository roleRepository)
         {
-            _roleContainerDal = roleContainerDal;
+            _roleRepository = roleRepository;
         }
 
         public async Task<Role> GetRoleByName(string roleName)
         {
-            return new Role(await _roleContainerDal.GetRoleByNameAsync(roleName));
+            return new Role(await _roleRepository.GetRoleByNameAsync(roleName));
         }
     }
 }

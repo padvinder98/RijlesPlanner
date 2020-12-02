@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RijlesPlanner.ApplicationCore.Interfaces;
 using RijlesPlanner.ApplicationCore.Models;
-using RijlesPlanner.ApplicationCore.ViewModels.DashboardViewModels;
+using RijlesPlanner.UI.MVC.ViewModels.DashboardViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,40 +27,21 @@ namespace RijlesPlanner.UI.MVC.Controllers
         }
 
         // GET: Dashboard/Index
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var user = await _userContainer.GetUserByEmailAddressAsync(User.Identity.Name);
+
+            var result = await _lessonContainer.GetLessonsByUserIdAsync(user.Id);
+
+            return View(result);
+        }
+
+        // GET: Dashboard/Shedule
+        [HttpGet]
+        public IActionResult Shedule()
         {
             return View();
-        }
-
-        public async Task<JsonResult> GetAllLessons()
-        {
-            var result = await _lessonContainer.GetAllLessonsAsync();
-
-            return Json(new { Success = true }); ;
-        }
-
-        // POST: Dashboard/AddLesson
-        [HttpPost]
-        [Authorize(Roles = "Instructor")]
-        public async Task<JsonResult> AddLesson(AddLessonViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userContainer.GetUserByEmailAddressAsync(User.Identity.Name);
-
-                var lesson = new Lesson(model.Title, model.Description, model.StartDate, model.EndDate, user);
-
-                int result = await _lessonContainer.CreateNewLessonAsync(lesson);
-
-                if (result > 0)
-                {
-                    return Json(new { success = true, responseText = "De les is gepland." });
-                }
-
-                return Json(new { success = false, responseText = "Er ging iets mis." });
-            }
-
-            return Json(new { success = false, responseText = "Niet alle velden zijn correct ingevuld." });
         }
 
         // GET: Dashboard/Students
@@ -69,22 +50,48 @@ namespace RijlesPlanner.UI.MVC.Controllers
         public async Task<IActionResult> Students()
         {
             var role = await _roleContainer.GetRoleByName("Student");
+            var instructor = await _userContainer.GetUserByEmailAddressAsync(User.Identity.Name);
 
             var allStudents = await _userContainer.GetAllStudents(role.Id);
+            var instructorStudents = await _userContainer.GetAllStudentsByInstructorAsync(instructor.Id);
 
-            var model = new StudentsViewModel { AllStudents = allStudents };
+            var model = new StudentsViewModel { AllStudents = allStudents, InstructorStudents = instructorStudents };
 
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetStudentInfo(Guid id)
+        // POST: Dashboard/AddStudentToInstuctor
+        [HttpPost]
+        [Authorize(Roles = "Instructor")]
+        public async Task<IActionResult> AddStudentToInstuctor(Guid studentId)
         {
-            var user = await _userContainer.GetUserByIdAsync(id);
+            var user = await _userContainer.GetUserByEmailAddressAsync(User.Identity.Name);
 
-            var model = new StudentInfoViewModel { Student = user };
+            var result = await _userContainer.AddStudentToInstructorAsync(user.Id, studentId);
 
-            return PartialView("~/views/Shared/PartialViews/DashboardPartialViews/_StudentInfoPartialView.cshtml", model);
+            if (result > 0)
+            {
+                return Json(new { success = true, responseText = "De student is toegevoegd." });
+            }
+
+            return Json(new { success = false, responseText = "Er ging iets mis." });
         }
-    }
+
+        // POST: Dashboard/RemoveStudentFromInstructor
+        [HttpPost]
+        [Authorize(Roles = "Instructor")]
+        public async Task<IActionResult> RemoveStudentFromInstructor(Guid studentId)
+        {
+            var user = await _userContainer.GetUserByEmailAddressAsync(User.Identity.Name);
+
+            var result = await _userContainer.RemoveStudentFromInstructorAsync(user.Id, studentId);
+
+            if (result > 0)
+            {
+                return Json(new { success = true, responseText = "De student is verwijderd." });
+            }
+
+            return Json(new { success = false, responseText = "Er ging iets mis." });
+        }
+    }        
 }

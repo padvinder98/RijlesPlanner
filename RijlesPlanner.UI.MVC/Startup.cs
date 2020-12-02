@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RijlesPlanner.ApplicationCore.Containers;
 using RijlesPlanner.ApplicationCore.Interfaces;
-using RijlesPlanner.DataAccessLayer;
-using RijlesPlanner.IDataAccessLayer;
+using RijlesPlanner.Data.Connection;
+using RijlesPlanner.Data.Repositories;
+using RijlesPlanner.IData.Interfaces;
+using RijlesPlanner.IData.Interfaces.ConnectionFactory;
 
 namespace RijlesPlanner.UI.MVC
 {
@@ -30,13 +33,15 @@ namespace RijlesPlanner.UI.MVC
             services.AddControllersWithViews();
 
             // Register dependencies.
-            services.AddScoped<IRoleContainerDal, RoleDal>();
+            services.AddScoped<IConnection, Connection>();
+
+            services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleContainer, RoleContainer>();
 
-            services.AddScoped<IUserContainerDal, UserDal>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserContainer, UserContainer>();
 
-            services.AddScoped<ILessonContainerDal, LessonDal>();
+            services.AddScoped<ILessonRepository, LessonRepository>();
             services.AddScoped<ILessonContainer, LessonContainer>();
         }
 

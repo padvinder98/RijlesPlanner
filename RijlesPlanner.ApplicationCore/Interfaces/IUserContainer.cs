@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using RijlesPlanner.ApplicationCore.Models;
 using RijlesPlanner.ApplicationCore.Results;
-using RijlesPlanner.ApplicationCore.ViewModels.AccountViewModels;
 
 namespace RijlesPlanner.ApplicationCore.Interfaces
 {
@@ -14,8 +13,10 @@ namespace RijlesPlanner.ApplicationCore.Interfaces
         public Task<bool> DoesEmailAddressExistsAsync(string emailAddress);
         public Task<UserResult> CreateNewUserAsync(User user, string password);
         public Task<bool> DoesPasswordsMatchAsync(string emailAddress, string password);
-        public Task<ProfileViewModel> GetProfileByEmailAddressAsync(string emailAddress);
         public Task UpdateUserAsync(User user);
         public Task<List<User>> GetAllStudents(Guid roleId);
+        public Task<int> AddStudentToInstructorAsync(Guid instructorId, Guid studentId);
+        public Task<int> RemoveStudentFromInstructorAsync(Guid instructorId, Guid studentId);
+        public Task<List<User>> GetAllStudentsByInstructorAsync(Guid instructorId);
     }
 }

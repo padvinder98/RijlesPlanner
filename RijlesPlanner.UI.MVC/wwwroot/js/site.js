@@ -6,7 +6,7 @@ function GetAllLessons() {
     var events = [];
     $.ajax({
         type: "GET",
-        url: "/Dashboard/GetAllLessons",
+        url: "/Lesson/GetAllLessons",
         dataType: 'json',
         success: function (data) {
             $.each(data, function (Key, Value) {
@@ -44,18 +44,18 @@ function GenerateCalender(events) {
 
 
         eventClick: function (info) {
-            $('#myModal #eventTitle').text(info.event.title);
-            $('#myModal #eventId').text(info.event.id);
-
-            var $description = $('<div/>');
-            $description.append($('<p/>').html('<b>Start tijd: </b>' + info.event.start));
-            if (info.event.end != null) {
-                $description.append($('<p/>').html('<b>Eind tijd: </b>' + info.event.end));
-            }
-            $description.append($('<p/>').html('<b>Opmerking:</b>' + info.event.extendedProps.description));
-            $('#myModal #pDetails').empty().html($description);
-
-            $('#myModal').modal();
+            $.ajax({
+                type: "GET",
+                url: "/Lesson/GetLessonInfoPartialView",
+                data: { id: info.event.id },
+                datatype: "json",
+                cache: false,
+                error: function (e) { alert("nope" + e); },
+                success: function (partialViewData) {
+                    $('#your-div-to-hold-partial-view').html(partialViewData);
+                    $('#lessonInfoModal').modal('show');
+                }
+            });
         },
 
     })
@@ -67,22 +67,27 @@ function CreateLesson() {
     var description = document.getElementById('Description').value;
     var startDate = document.getElementById('StartDate').value;
     var endDate = document.getElementById('EndDate').value;
+    var studentId = $("#studentSelect option:selected").val();
+
 
     var model = {
         "Title": title,
         "Description": description,
         "StartDate": startDate,
-        "EndDate": endDate
+        "EndDate": endDate,
+        "StudentId": studentId
+
     }
 
     $.ajax({
-        type: "post",
-        url: "/Dashboard/AddLesson",
+        type: "POST",
+        url: "/Lesson/AddLesson",
         data: model,
         datatype: "json",
         cache: false,
         success: function (response) {
             if (response.success) {
+                $('#addLessonModal').modal('hide');
                 GetAllLessons();
                 if (response.responseText != null) {
                     alert(response.responseText);
@@ -98,13 +103,14 @@ function CreateLesson() {
 }
 
 function DeleteLesson() {
-    var id = $("#eventId").text()
+    var lessonId = $("#lessonId").text()
 
     $.ajax({
-        method: "post",
-        url: "/Schedule/DeleteLesson",
-        data: JSON.stringify(id),
-        contentType: "application/json; charset=utf-8",
+        method: "POST",
+        url: "/Lesson/DeleteLesson",
+        data: { id: lessonId },
+        datatype: "json",
+        cache: false,
         success: function (response) {
             if (response.success) {
                 GetAllLessons();

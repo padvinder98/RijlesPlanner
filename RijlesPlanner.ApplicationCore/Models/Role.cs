@@ -1,5 +1,5 @@
 ﻿using System;
-using RijlesPlanner.IDataAccessLayer.Dtos;
+using RijlesPlanner.IData.Dtos;
 
 namespace RijlesPlanner.ApplicationCore.Models
 {

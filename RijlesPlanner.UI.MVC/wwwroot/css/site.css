@@ -24,6 +24,11 @@ a {
   border-color: #1861ac;
 }
 
+/* Navbar tweeks*/
+.bg-red {
+    background-color: #ad0000;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

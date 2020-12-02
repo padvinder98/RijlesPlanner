@@ -4,46 +4,56 @@ using System.Linq;
 using System.Threading.Tasks;
 using RijlesPlanner.ApplicationCore.Interfaces;
 using RijlesPlanner.ApplicationCore.Models;
-using RijlesPlanner.IDataAccessLayer;
-using RijlesPlanner.IDataAccessLayer.Dtos;
+using RijlesPlanner.IData.Dtos;
+using RijlesPlanner.IData.Interfaces;
 
 namespace RijlesPlanner.ApplicationCore.Containers
 {
     public class LessonContainer : ILessonContainer
     {
-        private readonly ILessonContainerDal _lessonContainerDal;
-        private readonly IUserContainerDal _userContainerDal;
+        private readonly ILessonRepository _lessonRepository;
+        private readonly IUserRepository _userRepository;
 
-        public LessonContainer(ILessonContainerDal lessonContainerDal, IUserContainerDal userContainerDal)
+        public LessonContainer(ILessonRepository lessenRepository, IUserRepository userRepository)
         {
-            _lessonContainerDal = lessonContainerDal;
-            _userContainerDal = userContainerDal;
+            _lessonRepository = lessenRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<int> CreateNewLessonAsync(Lesson lesson)
         {
-            var userDto = await _userContainerDal.GetUserByEmailAddressAsync(lesson.Instructor.EmailAddress);
+            var instructorDto = await _userRepository.GetUserByEmailAddressAsync(lesson.Instructor.EmailAddress);
+            var studentDto = await _userRepository.GetUserByEmailAddressAsync(lesson.Student.EmailAddress);
 
-            int count = await _lessonContainerDal.CreateNewLessonAsync(new LessonDto(lesson.Title, lesson.Description, lesson.StartDate, lesson.EndDate, userDto));
+            int count = await _lessonRepository.CreateNewLessonAsync(new LessonDto(lesson.Title, lesson.Description, lesson.StartDate, lesson.EndDate, instructorDto, studentDto));
 
             return count;
         }
 
-        public Task<int> DeleteLessonAsync(string id)
+        public async Task<int> DeleteLessonAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Lesson> FindLessonByIdAsync(string id)
-        {
-            throw new NotImplementedException();
+            return await _lessonRepository.DeleteLessonAsync(id);
         }
 
         public async Task<List<Lesson>> GetAllLessonsAsync()
         {
-            var result = await _lessonContainerDal.GetAllLessonsAsync();
+            var result = await _lessonRepository.GetAllLessonsAsync();
 
-            return new List<Lesson>();
+            return result.Select(l => new Lesson(l)).ToList();
+        }
+
+        public async Task<Lesson> GetLessonByIdAsync(Guid id)
+        {
+            var result = await _lessonRepository.GetLessonByIdAsync(id);
+
+            return new Lesson(result);
+        }
+
+        public async Task<List<Lesson>> GetLessonsByUserIdAsync(Guid userId)
+        {
+            var result = await _lessonRepository.GetLessonsByUserIdAsync(userId);
+
+            return result.Select(l => new Lesson(l)).ToList();
         }
     }
 }

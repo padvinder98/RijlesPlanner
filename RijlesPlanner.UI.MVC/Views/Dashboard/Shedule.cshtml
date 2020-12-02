@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Shedule";
+}
+
+
+<div class="container">
+    <h2>Shedule</h2>
+
+    @if (User.IsInRole("Instructor"))
+    {
+        <div lang="row">
+            <div class="col">
+                <input value="Create new lesson" id="get-add-lesson" type="button" class="btn btn-primary" />
+            </div>
+        </div>
+
+    }
+    <div id="your-div-to-hold-partial-view"></div>
+
+    <br />
+    <div id="calendar"></div>
+
+
+
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            GetAllLessons();
+        });
+
+        $(document).on('click', '#add-lesson-button', function () {
+            CreateLesson();
+        });
+
+        $(document).on('click', '#delete-lesson', function () {
+            var r = confirm("Weet je zeker dat je deze les wilt verwijderen?");
+            if (r == true) {
+                txt = DeleteLesson();
+            }
+        });
+
+        $(document).on('click', '#get-add-lesson', function () {
+
+            var currentRow = $(this).closest("tr");
+
+            var id = currentRow.find("td:eq(0)").text();
+
+            $.ajax({
+                type: "GET",
+                url: "/Lesson/GetAddLessonPartialView",
+                error: function (e) { alert("nope" + e); },
+                success: function (partialViewData) {
+                    $('#your-div-to-hold-partial-view').html(partialViewData);
+                    $('#addLessonModal').modal('show');
+                }
+            });
+        });
+    </script>
+}

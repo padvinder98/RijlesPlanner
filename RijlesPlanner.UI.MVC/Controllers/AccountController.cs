@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RijlesPlanner.ApplicationCore.Interfaces;
 using RijlesPlanner.ApplicationCore.Models;
-using RijlesPlanner.ApplicationCore.ViewModels.AccountViewModels;
+using RijlesPlanner.UI.MVC.ViewModels.AccountViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -121,25 +121,27 @@ namespace RijlesPlanner.UI.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            return View(await _userContainer.GetProfileByEmailAddressAsync(User.Identity.Name));
+            var user = await _userContainer.GetUserByEmailAddressAsync(User.Identity.Name);
+
+            return View(new ProfileViewModel { FirstName = user.FirstName, LastName = user.LastName, DateOfBirth = user.DateOfBirth, EmailAddress = user.EmailAddress, StreetName = user.StreetName, City = user.City, HouseNumber = user.HouseNumber });
         }
 
         // POST: Account/Profile
         [HttpPost]
         public async Task<IActionResult> Profile(ProfileViewModel model)
         {
+            var user = await _userContainer.GetUserByEmailAddressAsync(User.Identity.Name);
+
             if (ModelState.IsValid)
             {
-                var user = await _userContainer.GetUserByEmailAddressAsync(User.Identity.Name);
-
                 user.Update(model.FirstName, model.LastName, model.DateOfBirth, model.City, model.StreetName, model.HouseNumber);
 
                 await _userContainer.UpdateUserAsync(user);
-                
-                return View(await _userContainer.GetProfileByEmailAddressAsync(User.Identity.Name));
+
+                return View(new ProfileViewModel { FirstName = user.FirstName, LastName = user.LastName, DateOfBirth = user.DateOfBirth, EmailAddress = user.EmailAddress, StreetName = user.StreetName, City = user.City, HouseNumber = user.HouseNumber });
             }
 
-            return View(await _userContainer.GetProfileByEmailAddressAsync(User.Identity.Name));
+            return View(new ProfileViewModel { FirstName = user.FirstName, LastName = user.LastName, DateOfBirth = user.DateOfBirth, EmailAddress = user.EmailAddress, StreetName = user.StreetName, City = user.City, HouseNumber = user.HouseNumber });
         }
     }
 }

@@ -9,7 +9,8 @@ namespace RijlesPlanner.ApplicationCore.Interfaces
     {
         public Task<List<Lesson>> GetAllLessonsAsync();
         public Task<int> CreateNewLessonAsync(Lesson lesson);
-        public Task<Lesson> FindLessonByIdAsync(string id);
-        public Task<int> DeleteLessonAsync(string id);
+        public Task<int> DeleteLessonAsync(Guid id);
+        public Task<Lesson> GetLessonByIdAsync(Guid id);
+        public Task<List<Lesson>> GetLessonsByUserIdAsync(Guid userId);
     }
 }

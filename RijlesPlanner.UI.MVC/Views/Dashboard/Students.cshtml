@@ -1,4 +1,8 @@
-﻿@model RijlesPlanner.ApplicationCore.ViewModels.DashboardViewModels.StudentsViewModel
+﻿@model RijlesPlanner.UI.MVC.ViewModels.DashboardViewModels.StudentsViewModel
+
+@{
+    ViewData["Title"] = "Students";
+}
 
 <div class="container">
     <h2>Driveschool students</h2>
@@ -6,27 +10,57 @@
     <div class="row">
         <div class="col">
             <h4>All students</h4>
-            <table class="table" id="usersTable">
-                <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">First name</th>
-                        <th scope="col">Last name</th>
-                        <th scope="col">Option</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var student in Model.AllStudents)
-                    {
+            <div class="table-responsive">
+                <table class="table table-striped" id="usersTable">
+                    <thead>
                         <tr>
-                            <td id="student-id">@student.Id</td>
-                            <td>@student.FirstName</td>
-                            <td>@student.LastName</td>
-                            <td><input class="btn btn-primary btn-sm" value="Info" type="button" id="target" /> <input class="btn btn-success btn-sm" value="Add" type="button" /></td>
+                            <th hidden scope="col">Id</th>
+                            <th scope="col">First name</th>
+                            <th scope="col">Last name</th>
+                            <th scope="col">Option</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model.AllStudents)
+                        {
+                            <tr>
+                                <td hidden id="student-id">@student.Id</td>
+                                <td>@student.FirstName</td>
+                                <td>@student.LastName</td>
+                                <td><input class="btn btn-primary btn-sm" value="Info" type="button" id="student-info" /> <input class="btn btn-success btn-sm" value="Add" id="add-student" type="button" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4>My students</h4>
+            <div class="table-responsive">
+                <table class="table table-striped" id="instructorUsersTable">
+                    <thead>
+                        <tr>
+                            <th hidden scope="col">Id</th>
+                            <th scope="col">First name</th>
+                            <th scope="col">Last name</th>
+                            <th scope="col">Option</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model.InstructorStudents)
+                        {
+                            <tr>
+                                <td hidden id="student-id">@student.Id</td>
+                                <td>@student.FirstName</td>
+                                <td>@student.LastName</td>
+                                <td><input class="btn btn-primary btn-sm" value="Info" type="button" id="student-info" /> <input class="btn btn-danger btn-sm" value="Remove" id="remove-student" type="button" /></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -37,7 +71,11 @@
 
 @section Scripts{
     <script>
-        $("#usersTable").on('click', '#target', function () {
+        $(document).ready(function () {
+
+        });
+
+        $(document).on('click', '#student-info', function () {
 
             var currentRow = $(this).closest("tr");
 
@@ -45,7 +83,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "/Dashboard/GetStudentInfo",
+                url: "/Student/GetStudentInfoPartialView",
                 data: { id: id },
                 datatype: "json",
                 cache: false,
@@ -55,5 +93,62 @@
                     $('#studentInfoModal').modal('show');
                 }
             });
-        });</script>
+        });
+
+        $(document).on('click', '#add-student', function () {
+
+            var currentRow = $(this).closest("tr");
+
+            var id = currentRow.find("td:eq(0)").text();
+
+            $.ajax({
+                type: "POST",
+                url: "/Dashboard/AddStudentToInstuctor",
+                data: { studentId: id },
+                datatype: "json",
+                cache: false,
+                success: function (response) {
+                    if (response.success) {
+                        if (response.responseText != null) {
+                            alert(response.responseText);
+                            window.location.href = "@Url.Action("Students", "Dashboard")";
+                        }
+                    } else {
+                        alert(response.responseText);
+                    }
+                },
+                error: function (xhr) {
+                    alert('Er ging iets mis met het toevoegen van de student.');
+                }
+            });
+        });
+
+        $(document).on('click', '#remove-student', function () {
+
+            var currentRow = $(this).closest("tr");
+
+            var id = currentRow.find("td:eq(0)").text();
+
+            $.ajax({
+                type: "POST",
+                url: "/Dashboard/RemoveStudentFromInstructor",
+                data: { studentId: id },
+                datatype: "json",
+                cache: false,
+                success: function (response) {
+                    if (response.success) {
+                        if (response.responseText != null) {
+                            alert(response.responseText);
+                            window.location.href = "@Url.Action("Students", "Dashboard")";
+                        }
+                    } else {
+                        alert(response.responseText);
+                    }
+                },
+                error: function (xhr) {
+                    alert('Er ging iets mis met het verwijderen van de student.');
+                }
+            });
+        });
+    </script>
 }
