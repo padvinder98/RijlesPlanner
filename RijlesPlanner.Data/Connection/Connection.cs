@@ -8,15 +8,14 @@ namespace RijlesPlanner.Data.Connection
     public class Connection : IConnection
     {
         private readonly string connectionString = ConnectionString.GetConnectionString();
-
         public IDbConnection GetConnection
         {
             get
             {
-                var conn = new SqlConnection();
-                conn.ConnectionString = connectionString;
-                conn.Open();
-                return conn;
+                var connection = new SqlConnection();
+                connection.ConnectionString = connectionString;
+                connection.Open();
+                return connection;
             }
         }
     }

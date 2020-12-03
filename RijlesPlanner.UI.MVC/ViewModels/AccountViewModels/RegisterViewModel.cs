@@ -6,35 +6,35 @@ namespace RijlesPlanner.UI.MVC.ViewModels.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "First name")]
+        [Display(Name = "Voornaam")]
         [DataType(DataType.Text)]
-        [RegularExpression(@"^[A-Za-z]+[\s][A-Za-z]+[.][A-Za-z]+$", ErrorMessage = "Please enter a valid first name.")]
+        [RegularExpression(@"^[A-Za-z]+[\s][A-Za-z]+[.][A-Za-z]+$", ErrorMessage = "Dit is geen geldige voornaam.")]
         public string FirstName { get; set; }
 
         [Required]
-        [Display(Name = "Last name")]
+        [Display(Name = "Achternaam")]
         [DataType(DataType.Text)]
-        [RegularExpression(@"^[A-Za-z]+[\s][A-Za-z]+[.][A-Za-z]+$", ErrorMessage = "Please enter a valid last name.")]
+        [RegularExpression(@"^[A-Za-z]+[\s][A-Za-z]+[.][A-Za-z]+$", ErrorMessage = "Dit is geen geldige achternaam.")]
         public string LastName { get; set; }
 
         [Required]
-        [Display(Name = "Date of birth")]
+        [Display(Name = "Geboortedatum")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
         [Required]
-        [Display(Name = "Email address")]
+        [Display(Name = "E-mailadres")]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
 
         [Required]
-        [Display(Name = "Password")]
+        [Display(Name = "Wachtwoord")]
         [DataType(DataType.Password)]
         [MinLength(6)]
         public string Password { get; set; }
 
         [Required]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Bevestig wachtwoord")]
         [DataType(DataType.Password)]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }

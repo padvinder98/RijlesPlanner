@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Lesson information
+                    Les informatie
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -17,12 +17,12 @@
                 </p>
                 <div class="row">
                     <div class="col">
-                        Title: @Html.DisplayFor(Model => Model.Title)
+                        Titel: @Html.DisplayFor(Model => Model.Title)
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        Description: @Html.DisplayFor(Model => Model.Description)
+                        Omschrijving: @Html.DisplayFor(Model => Model.Description)
                     </div>
                 </div>
                 <div class="row">
@@ -32,16 +32,16 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        End: @Html.DisplayFor(Model => Model.End)
+                        Einde: @Html.DisplayFor(Model => Model.End)
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 @if (User.IsInRole("Instructor"))
                 {
-                    <button type="button" class="btn btn-danger" id="delete-lesson" data-dismiss="modal">Cancel lesson</button>
+                    <button type="button" class="btn btn-danger" id="delete-lesson" data-dismiss="modal">Les annuleren</button>
                 }
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
             </div>
         </div>
     </div>

@@ -6,16 +6,16 @@ namespace RijlesPlanner.UI.MVC.ViewModels.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email address")]
+        [Display(Name = "E-mailadres")]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
 
         [Required]
-        [Display(Name = "Password")]
+        [Display(Name = "Wachtwoord")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me")]
+        [Display(Name = "Onthoud mij")]
         public bool RememberMe { get; set; }
     }
 }

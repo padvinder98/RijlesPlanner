@@ -9,13 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RijlesPlanner.ApplicationCore\RijlesPlanner.ApplicationCore.csproj" />
     <ProjectReference Include="..\RijlesPlanner.IData\RijlesPlanner.IData.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\RijlesPlanner.Data\RijlesPlanner.Data.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\RijlesPlanner.Logic\RijlesPlanner.Logic.csproj" />
   </ItemGroup>
 
   <ItemGroup>

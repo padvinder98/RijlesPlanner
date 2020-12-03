@@ -3,22 +3,22 @@
         if (User.Identity.IsAuthenticated)
         {
             <li class="nav-item">
-                <a class="nav-link text-white" asp-action="Shedule" asp-controller="Dashboard">Shedule</a>
+                <a class="nav-link text-white" asp-action="Shedule" asp-controller="Dashboard">Agenda</a>
             </li>
             @if (User.IsInRole("Instructor"))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-white" asp-action="Students" asp-controller="Dashboard">Students</a>
+                    <a class="nav-link text-white" asp-action="Students" asp-controller="Dashboard">Studenten</a>
                 </li>
             }
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Hello, @User.Identity.Name
+                    Hallo, @User.Identity.Name
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" asp-action="Profile" asp-controller="Account">Profile</a>
+                    <a class="dropdown-item" asp-action="Profile" asp-controller="Account">Profiel</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" asp-action="LogOut" asp-controller="Account">Logout</a>
+                    <a class="dropdown-item" asp-action="LogOut" asp-controller="Account">Uiloggen</a>
                 </div>
             </li>
 
@@ -26,10 +26,10 @@
         else
         {
             <li class="nav-item">
-                <a class="nav-link text-white" asp-action="Login" asp-controller="Account">Login</a>
+                <a class="nav-link text-white" asp-action="Login" asp-controller="Account">Inloggen</a>
             </li>
             <li>
-                <a class="nav-link text-white" asp-action="Register" asp-controller="Account">Register</a>
+                <a class="nav-link text-white" asp-action="Register" asp-controller="Account">Registreren</a>
             </li>
         }
     }

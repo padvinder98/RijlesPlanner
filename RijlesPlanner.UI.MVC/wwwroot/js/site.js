@@ -1,8 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-function GetAllLessons() {
+﻿function GetAllLessons() {
     var events = [];
     $.ajax({
         type: "GET",
@@ -62,7 +58,7 @@ function GenerateCalender(events) {
     calendar.render();
 }
 
-function CreateLesson() {
+$(document).on('click', '#add-lesson-button', function () {
     var title = document.getElementById('Title').value;
     var description = document.getElementById('Description').value;
     var startDate = document.getElementById('StartDate').value;
@@ -100,7 +96,14 @@ function CreateLesson() {
             alert("Er ging iets mis met het toevoegen van de les.")
         },
     });
-}
+});
+
+$(document).on('click', '#delete-lesson', function () {
+    var r = confirm("Weet u zeker dat u deze les wilt verwijderen?");
+    if (r == true) {
+        txt = DeleteLesson();
+    }
+});
 
 function DeleteLesson() {
     var lessonId = $("#lessonId").text()
@@ -126,3 +129,92 @@ function DeleteLesson() {
         }
     });
 }
+
+$(document).on('click', '#student-info', function () {
+
+    var currentRow = $(this).closest("tr");
+
+    var id = currentRow.find("td:eq(0)").text();
+
+    $.ajax({
+        type: "GET",
+        url: "/Student/GetStudentInfoPartialView",
+        data: { id: id },
+        datatype: "json",
+        cache: false,
+        error: function (e) { alert("nope" + e); },
+        success: function (partialViewData) {
+            $('#partial-holder').html(partialViewData);
+            $('#studentInfoModal').modal('show');
+        }
+    });
+});
+
+
+$(document).on('click', '#get-add-lesson', function () {
+    $.ajax({
+        type: "GET",
+        url: "/Lesson/GetAddLessonPartialView",
+        error: function (e) { alert("nope" + e); },
+        success: function (partialViewData) {
+            $('#your-div-to-hold-partial-view').html(partialViewData);
+            $('#addLessonModal').modal('show');
+        }
+    });
+});
+
+$(document).on('click', '#add-student', function () {
+
+    var currentRow = $(this).closest("tr");
+
+    var id = currentRow.find("td:eq(0)").text();
+
+    $.ajax({
+        type: "POST",
+        url: "/Dashboard/AddStudentToInstuctor",
+        data: { studentId: id },
+        datatype: "json",
+        cache: false,
+        success: function (response) {
+            if (response.success) {
+                if (response.responseText != null) {
+                    alert(response.responseText);
+                    window.location.href = "/Dashboard/Students";
+                }
+            } else {
+                alert(response.responseText);
+            }
+        },
+        error: function (xhr) {
+            alert('Er ging iets mis met het toevoegen van de student.');
+        }
+    });
+});
+
+$(document).on('click', '#remove-student', function () {
+
+    var currentRow = $(this).closest("tr");
+
+    var id = currentRow.find("td:eq(0)").text();
+
+    $.ajax({
+        type: "POST",
+        url: "/Dashboard/RemoveStudentFromInstructor",
+        data: { studentId: id },
+        datatype: "json",
+        cache: false,
+        success: function (response) {
+            if (response.success) {
+                if (response.responseText != null) {
+                    alert(response.responseText);
+                    window.location.href = "/Dashboard/Students";
+                }
+            } else {
+                alert(response.responseText);
+            }
+        },
+        error: function (xhr) {
+            alert('Er ging iets mis met het verwijderen van de student.');
+        }
+    });
+});

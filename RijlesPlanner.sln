@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RijlesPlanner.UI.MVC", "RijlesPlanner.UI.MVC\RijlesPlanner.UI.MVC.csproj", "{D697E33D-32A0-4D47-84B8-8B89C2319846}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RijlesPlanner.ApplicationCore", "RijlesPlanner.ApplicationCore\RijlesPlanner.ApplicationCore.csproj", "{5812E27C-6C97-4B35-B96A-2DFDAE8BA7B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RijlesPlanner.Logic", "RijlesPlanner.Logic\RijlesPlanner.Logic.csproj", "{5812E27C-6C97-4B35-B96A-2DFDAE8BA7B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RijlesPlanner.Test", "RijlesPlanner.Test\RijlesPlanner.Test.csproj", "{FD159E8B-2904-4249-80D8-91F72878DC59}"
 EndProject

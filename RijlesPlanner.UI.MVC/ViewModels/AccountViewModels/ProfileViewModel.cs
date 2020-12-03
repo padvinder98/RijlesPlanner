@@ -6,23 +6,23 @@ namespace RijlesPlanner.UI.MVC.ViewModels.AccountViewModels
     public class ProfileViewModel
     {
         [Required]
-        [Display(Name = "First name")]
+        [Display(Name = "Voornaam")]
         public string FirstName { get; set; }
         [Required]
-        [Display(Name = "Last name")]
+        [Display(Name = "Achternaam")]
         public string LastName { get; set; }
         [Required]
-        [Display(Name = "Date of birth")]
+        [Display(Name = "Geboortedatum")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
-        [Display(Name = "Email address")]
+        [Display(Name = "E-mailadres")]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
-        [Display(Name = "City")]
+        [Display(Name = "Stad")]
         public string City { get; set; }
-        [Display(Name = "Street name")]
+        [Display(Name = "Straat")]
         public string StreetName { get; set; }
-        [Display(Name = "House number")]
+        [Display(Name = "Huisnummer")]
         public string HouseNumber { get; set; }
     }
 }
